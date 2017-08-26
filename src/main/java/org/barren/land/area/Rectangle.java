@@ -37,17 +37,4 @@ public class Rectangle {
                     " >= " + x2);
         }
     }
-
-    public List<Strip> getStrips(){
-        return IntStream.range(bottomLeftX, topRightX).boxed().
-                map(x -> new Strip(x, bottomLeftY, topRightY)).
-                collect(Collectors.toList());
-    }
-//
-//    public boolean isInsideOf(Rectangle outer){
-//        return bottomLeftX>=outer.bottomLeftX &&
-//                bottomLeftY>=outer.bottomLeftY &&
-//                topRightX<=outer.topRightX &&
-//                topRightY<=outer.topRightY;
-//    }
 }

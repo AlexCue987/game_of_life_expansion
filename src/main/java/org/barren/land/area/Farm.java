@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.barren.land.ExpansionVisitor;
+import org.barren.land.parser.InputParser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +31,29 @@ public class Farm {
         populateSquares(arrayXSize, arrayYSize);
     }
 
+    public static Farm fromStdinInput(String input){
+        InputParser parser = new InputParser();
+        List<List<Integer>> barrenLandCoordinates = parser.parseInput(input);
+        List<Rectangle> barrenLand = barrenLandCoordinates.stream().
+                map(Farm::getRectangle).collect(Collectors.toList());
+        Farm farm = new Farm(400, 600);
+        barrenLand.forEach(farm::setBarren);
+        ExpansionVisitor expansionVisitor = new ExpansionVisitor();
+        expansionVisitor.groupSquaresIntoAreas(farm);
+        return farm;
+    }
+
+    public static Rectangle getRectangle(List<Integer> rectangleCoordinatesFromInput){
+        Integer bottomLeftXAsIs = rectangleCoordinatesFromInput.get(0);
+        Integer bottomLeftYAsIs = rectangleCoordinatesFromInput.get(1);
+        int topRightXAdjusted = rectangleCoordinatesFromInput.get(2) + 1;
+        int topRightYAdjusted = rectangleCoordinatesFromInput.get(3) + 1;
+        return new Rectangle(bottomLeftXAsIs,
+                bottomLeftYAsIs,
+                topRightXAdjusted,
+                topRightYAdjusted);
+    }
+
     private void populateSquares(int arrayXSize, int arrayYSize) {
         for(int x=0; x<arrayXSize; x++){
             for(int y=0; y<arrayYSize; y++){
@@ -48,7 +73,6 @@ public class Farm {
     public void setBarren(Rectangle barrenArea){
         for(int x=barrenArea.getBottomLeftX(); x<barrenArea.getTopRightX(); x++){
             for(int y=barrenArea.getBottomLeftY(); y<barrenArea.getTopRightY(); y++){
-//                System.out.println(x + ", " + y);
                 Square square = getSquare(x, y);
                 square.setFertile(false);
             }
@@ -63,8 +87,7 @@ public class Farm {
         return areasByNumber.values().stream().sorted().collect(Collectors.toList());
     }
 
-    public List<Square> getSquaresList(){
-        return Arrays.stream(squares).
-                flatMap(Arrays::stream).collect(Collectors.toList());
+    public String getAreaSizesAsString(){
+        return getAreas().stream().map(Object::toString).collect(Collectors.joining(" "));
     }
 }

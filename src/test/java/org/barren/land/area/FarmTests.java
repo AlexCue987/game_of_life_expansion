@@ -50,4 +50,20 @@ public class FarmTests {
             }
         }
     }
+
+    @Test
+    public void example1_works(){
+        String input = "{\"0 292 399 307\"}";
+        Farm farm = Farm.fromStdinInput(input);
+        String actual = farm.getAreaSizesAsString();
+        Assert.assertEquals("116800 116800", actual);
+    }
+
+    @Test
+    public void example2_works(){
+        String input = "{\"48 192 351 207\", \"48 392 351 407\", \"120 52 135 547\", \"260 52 275 547\"}";
+        Farm farm = Farm.fromStdinInput(input);
+        String actual = farm.getAreaSizesAsString();
+        Assert.assertEquals("22816 192608", actual);
+    }
 }

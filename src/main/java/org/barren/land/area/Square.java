@@ -9,15 +9,20 @@ public class Square {
     public static final int NO_AREA_ASSIGNED = 0;
     @Setter
     private boolean fertile;
-    private final int areaNumber;
+    @Setter
+    private int areaNumber;
+    private final int x;
+    private final int y;
 
-    Square(boolean fertile, int areaNumber){
+    Square(boolean fertile, int areaNumber, int x, int y){
         this.fertile = fertile;
         this.areaNumber = areaNumber;
+        this.x = x;
+        this.y = y;
     }
 
-    public Square(){
-        this(true, NO_AREA_ASSIGNED);
+    public Square(int x, int y){
+        this(true, NO_AREA_ASSIGNED, x, y);
     }
 
     public boolean isFertileAndUnassigned(){
